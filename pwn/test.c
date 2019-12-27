@@ -50,7 +50,7 @@ int main(void) {
     while (1) {
         get_obj(&obj);
 
-        printf("type: %d\nsize: %d\ndata: %.*s\n", obj.type, obj.size, obj.size, obj.data);
+        //printf("type: %d\nsize: %d\ndata: %.*s\n", obj.type, obj.size, obj.size, obj.data);
 
         switch (obj.type) {
             case READ_T:
@@ -60,7 +60,7 @@ int main(void) {
                 }
                 memcpy(buf, obj.data, obj.size);
                 //buf[2] = '\0';
-                printf("READ_T: strlen %d\n", strlen(buf));
+                //printf("READ_T: strlen of buf %d\n", strlen(buf));
                 break;
             case WRITE_T:
                 printf("data: %s\n", buf);
@@ -70,9 +70,7 @@ int main(void) {
                     puts("Overflow detected!");
                     return 1;
                 }
-                int s = strlen(buf);
-                printf("strlen: %d\n", s);
-                memcpy(buf + s, obj.data, obj.size);
+                memcpy(buf + strlen(buf), obj.data, obj.size);
                 break;
             case END_T:
                 return 0;
