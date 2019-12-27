@@ -1,0 +1,9 @@
+1. Opis formatu
+* Pierwsze 24 bity w pliku zajmuje img_size_x (szerokość obrazku)
+* Kolejne 24 bity zajmuje img_size_y (wysokość obrazku)
+* Dalej działa taki schemat:
+    * jeżeli następny bit jest zapalony, to wczytujemy 3 liczby 8 bitów oznaczające odpowiednio (r, g, b)
+    * wpp. wczytujemy 2 liczby po 5 bitów, mnożymy każdą przez 3 (bo rgb), z których pierwsza liczba oznacza o ile musimy się cofnąć wstecz względem aktualnej pozycji, a druga oznacza rozmiar obszaru do kopiowania.
+
+2. Proces dojścia do rozwiązania.
+Uruchomiłem program bez argumentu i zobaczyłem błąd «Missing argument!». W programie Ghidra wyszukałem ten napis i uświadomiłem sobie, że to sprawdzenie zawiera się w głównej funkcji (`140001f80`) programu. Zauważyłem, że w funkcji `140001080` dzieje się inicjacja struktury, która jest pierwszym argumentem do funkcji (`1400010a0`), służącej do czytania z pliku do bufora i że ta struktura zawiera w sobie: wskaźnik do pliku, bufor 8 bajtowy, stan wypełnienia bufora i czy eof; drugim argumentem tej funkcji jest liczba bitów do wczytania. Po zauważeniu informacji o wczytaniu wysokości i szerokości o długości 24 bitów, zacząłem analizować funkcję do układania pixeli (`1400022b0`). Zauważyłem, że struktura allegro_color zawiera w sobie 4 floaty (r, g, b, a). Przeszedłem do analizy funkcji `1400011c0`, gdzie dzieje się wczytanie kolejnych pixeli: przypadek z zapalonym bitem był łatwy, a żeby zrozumieć ten drugi musiałem ustawić się x64dbg w tym miejscu i patrzeć co to robi z pamięcią.
