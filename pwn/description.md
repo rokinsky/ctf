@@ -8,7 +8,7 @@ Zacząłem od sprawdzenia włączanych zabezpieczeń pliku binarnego programu za
     NX:       NX enabled
     PIE:      PIE enabled
 
-z czego wywnioskowałem, że sensownym pomysłem byłoby skorzystanie z ROPGadgetoów.
+z czego wywnioskowałem, że sensownym pomysłem jest skorzystanie z ROPGadgetoów.
 
 Widać, że operacja `APPEND_T` jest wadliwym miejscem programu i można to wykorzystać do przepełnienia bufora robiąc pełny `READ_T` i po nim `APPEND_T`.
 
