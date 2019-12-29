@@ -25,4 +25,4 @@ strings -tx libc.so.6 | grep "bin/sh" && \
 ROPgadget --binary libc.so.6 | grep "pop rdi ; ret"
 ```
 
-Powstały po drodze skrypt w pythone jest w pliku `exploit`
+Powstały po drodze skrypt jest w pliku `exploit.py`
