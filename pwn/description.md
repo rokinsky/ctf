@@ -14,9 +14,9 @@ Widać, że operacja `APPEND_T` jest wadliwym miejscem programu i można to wyko
 
 Zauważyłem, że w programie po odczycie danych jest wykonywana funkcja `memfrob` na otrzymanym obiekcie, więc przed wysyłaniem danych do programu wykonuje analogiczną funkcję, ponieważ xor jest grupą 2-elementową. 
 
-Wyłapywanie kanarka wygląda standardowo - jak na zajęciach. Z wyłączonym ASLRem i swoim libcu napisałem wywołanie shella ze stałym adresem. Po znalezieniu offseta pomiędzy kanarkiem a ROPgadgetami udało się uruchomić shella lokalnie.
+Wyłapywanie kanarka wygląda standardowo - jak na zajęciach. Z wyłączonym ASLRem i swoim libcem napisałem wywołanie shella ze stałym adresem. Po znalezieniu odpowiedniego offseta pomiędzy kanarkiem a ROPgadgetami udało się uruchomić shella lokalnie.
 
-Za pomocą adresu `__libc_start_main + offset` na stosie udało się wyciągnąć adres libca i zatem włączyć lokalnie ASLR. Została tylko zamiana offsetów libca, które dostałem poniższymi komandami:
+Za pomocą adresu `__libc_start_main + offset` na stosie udało się wyciągnąć adres libca i zatem obejść ASLR. Została tylko zamiana offsetów libca, które dostałem wykonująć poniższe komendy:
 
 ```
 readelf -Ws libc.so.6 | grep "system@@" && \
