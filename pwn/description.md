@@ -8,21 +8,22 @@ Zacząłem od sprawdzenia włączanych zabezpieczeń pliku binarnego programu za
     NX:       NX enabled
     PIE:      PIE enabled
 
-z czego wywnioskowałem, że sensownym pomysłem jest skorzystanie z ROPGadgetoów.
+z czego wywnioskowałem, że sensownym pomysłem jest skorzystanie z techniki ROP.
 
-Widać, że operacja `APPEND_T` jest wadliwym miejscem programu i można to wykorzystać do przepełnienia bufora robiąc pełny `READ_T` i po nim `APPEND_T`.
+Po szybkiej analizie kodu źródłowego programu widać, że operacja `APPEND_T` jest wadliwym miejscem programu i można to wykorzystać do przepełnienia bufora robiąc pełny `READ_T` i po nim `APPEND_T`.
 
 Zauważyłem, że w programie po odczycie danych jest wykonywana funkcja `memfrob` na otrzymanym obiekcie, więc przed wysyłaniem danych do programu wykonuje analogiczną funkcję, ponieważ xor jest grupą 2-elementową. 
 
-Wyłapywanie kanarka wygląda standardowo - jak na zajęciach. Z wyłączonym ASLRem i swoim libcem napisałem wywołanie shella ze stałym adresem. Po znalezieniu odpowiedniego offseta pomiędzy kanarkiem a ROPgadgetami udało się uruchomić shella lokalnie.
+Wyłapywanie kanarka wygląda standardowo jak na zajęciach. Z wyłączonym ASLRem i swoim libcem napisałem wywołanie shella ze stałym adresem. Po znalezieniu odpowiedniego offseta pomiędzy kanarkiem a ROPgadgetami udało się uruchomić shella lokalnie.
 
-Za pomocą adresu `__libc_start_main + offset` na stosie udało się wyciągnąć adres libca i zatem obejść ASLR. Została tylko zamiana offsetów libca, które dostałem wykonująć poniższe komendy:
+Za pomocą adresu `__libc_start_main + offset` na stosie udało się wyciągnąć adres libca i zatem włączyć ASLR. Została tylko zamiana offsetów w libcu, które dostałem wykonująć poniższą komendę:
 
 ```
-readelf -Ws libc.so.6 | grep "system@@" && \
-readelf -Ws libc.so.6 | grep "__libc_start_main@@" && \
-strings -tx libc.so.6 | grep "bin/sh" && \
-ROPgadget --binary libc.so.6 | grep "pop rdi ; ret"
+libcp=libc.so.6 && \
+readelf -Ws $libcp | grep "system@@GLIBC_2.2.5" && \
+readelf -Ws $libcp | grep "__libc_start_main@@GLIBC_2.2.5" && \
+strings -tx $libcp | grep "\/bin/sh" && \
+ROPgadget --binary $libcp | grep "pop rdi ; ret$"
 ```
 
 Powstały po drodze skrypt jest w pliku `exploit.py`
