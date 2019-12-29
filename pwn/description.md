@@ -1,4 +1,4 @@
-Zawartość pliku `flag.txt` w katalogu bieżącym serwera: BSK{s1mpl3-r0p-1s-5imp1e}
+Zawartość pliku `flag.txt` w katalogu bieżącym serwera: `BSK{s1mpl3-r0p-1s-5imp1e}`
 
 Zacząłem od sprawdzenia włączanych zabezpieczeń pliku binarnego programu za pomocą polecenia `checksec` w `pwndbg`: 
 
