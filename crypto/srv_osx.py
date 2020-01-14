@@ -16,7 +16,7 @@ def enc(msg):
     # oracle attacks — it's much more secure to just pad with spaces.
     while len(msg) % 16 != 0:
         msg += b' '
-    iv = getrandom(16)
+    iv = urandom(16)
     cipher = AES.new(mode=AES.MODE_CBC, key=key, iv=iv)
     return iv + cipher.encrypt(msg)
 
@@ -56,7 +56,7 @@ while True:
             pos = d.index(b'#')
             d = d[:pos]
 
-        #if b' ' in d[:1]:
+        # if b' ' in d[:1]:
         #    sys.stderr.write('S=' + repr(i) + ' ' + repr(d) + '\n')
 
         i = (i + 1) % 255
