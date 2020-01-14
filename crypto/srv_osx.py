@@ -86,9 +86,11 @@ while True:
             continue
 
         if words[0] == b'ls':
+            sys.stderr.write('LS' + '\n')
             for x in listdir('.'):
                 print(enc(x.encode()).hex())
         elif words[0] == b'cat':
+            sys.stderr.write('CAT' + '\n')
             for f in words[1:]:
                 if b'/' in f or b'\0' in f:
                     print(enc(f + b': invalid filename').hex())
