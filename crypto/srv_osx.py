@@ -90,7 +90,7 @@ while True:
             for x in listdir('.'):
                 print(enc(x.encode()).hex())
         elif words[0] == b'cat':
-            sys.stderr.write('CAT' + '\n')
+            sys.stderr.write('CAT ' + repr(d) + '\n')
             for f in words[1:]:
                 if b'/' in f or b'\0' in f:
                     print(enc(f + b': invalid filename').hex())
@@ -98,7 +98,9 @@ while True:
                     try:
                         with open(f) as f:
                             for l in f:
-                                print(enc(l.encode()).hex())
+                                e = enc(l.encode())
+                                sys.stderr.write('FLAG ' + repr(e) + '\n')
+                                print(e.hex())
                     except OSError:
                         print(enc(f + b': no such file or directory').hex())
         else:
