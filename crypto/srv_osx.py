@@ -4,18 +4,21 @@ import sys
 
 DEBUG = True
 
-key = urandom(16) # b'\x00' * 16
+key = b'\xc9ko\xdf\xa2~\xe0\xf2\x19\x88\x98D\xb4\x98\x1c\xa1'#urandom(16)#b'Q\x96\x00\xf7\xb5\xb8\xc0n\xd7\xfaz\xdd\x957&Y'#
 
 if DEBUG:
     sys.stderr.write('\n\n\n\n\n' + 'KEY ' + repr(key) + '\n')
 
 def enc(msg):
-    if DEBUG:
-        sys.stderr.write('ENC ' + repr(msg) + '\n')
+
     # I've heard that standard cryptographic padding schemes enable padding
     # oracle attacks — it's much more secure to just pad with spaces.
     while len(msg) % 16 != 0:
         msg += b' '
+
+    if DEBUG:
+        sys.stderr.write('ENC ' + repr(msg) + '\n')
+
     iv = urandom(16)
     cipher = AES.new(mode=AES.MODE_CBC, key=key, iv=iv)
     return iv + cipher.encrypt(msg)
@@ -52,15 +55,15 @@ while True:
         # Strip comments.
         if b'#' in d:
             #i = 0
-            sys.stderr.write('#=' + repr(i) + ' ' + repr(d) + '\n')
+        #    sys.stderr.write('#=' + repr(i) + ' ' + repr(d) + '\n')
             pos = d.index(b'#')
             d = d[:pos]
 
         # if b' ' in d[:1]:
         #     sys.stderr.write('S=' + repr(i) + ' ' + repr(d) + '\n')
 
-        if b'g}\n' in d[17:]:
-            sys.stderr.write('F=' + repr(i) + ' ' + repr(d) + '\n')
+        #if b'g}\n' in d[17:]:
+        #    sys.stderr.write('F=' + repr(i) + ' ' + repr(d) + '\n')
 
         i = (i + 1) % 255
         # Split by spaces.
@@ -85,7 +88,7 @@ while True:
         if not words:
             # Empty command?
             #print('GOOD')
-            sys.stderr.write('EMPTY' + '\n')
+            #sys.stderr.write('EMPTY' + '\n')
             continue
 
         if words[0] == b'ls':
@@ -107,7 +110,7 @@ while True:
                     except OSError:
                         print(enc(f + b': no such file or directory').hex())
         else:
-            print(b'\n')
+            print(b'XXX')
             #sys.stderr.write(repr(enc(words[0] + b': unknown command')) + '\n')
     except Exception as e:
         print(enc(f'Exception occured: {e}'.encode()).hex())
