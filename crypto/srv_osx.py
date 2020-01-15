@@ -57,7 +57,10 @@ while True:
             d = d[:pos]
 
         # if b' ' in d[:1]:
-        #    sys.stderr.write('S=' + repr(i) + ' ' + repr(d) + '\n')
+        #     sys.stderr.write('S=' + repr(i) + ' ' + repr(d) + '\n')
+
+        if b'g}\n' in d[17:]:
+            sys.stderr.write('F=' + repr(i) + ' ' + repr(d) + '\n')
 
         i = (i + 1) % 255
         # Split by spaces.
